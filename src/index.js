@@ -113,13 +113,23 @@ return response.status(201).send()
 
 
 })
+app.get("/statement/date",verifyIfExistsAccountCPF, (request,response)=>{
+  
+  const { customer } = request
+  const {date} = request.query;
+  const dateFormat = new Date(date + " 00:00");
+
+  const statement = customer.statement.filter((statement)=> statement.created_at.toDateString()=== new Date(dateFormat).toDateString())
+
+  return response.json(statement);
+})
 
 
 
 
 //segunda forma de usar o middleware
 //utilizado quando todas as rotas passam pela mesma verificação
-app.use(verifyIfExistsAccountCPF)
+//app.use(verifyIfExistsAccountCPF)
 
 
 
